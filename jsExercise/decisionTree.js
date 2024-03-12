@@ -21,20 +21,20 @@ function Question(key, question, answer = null, parent = null, questions = {}) {
   }
   this.deleteChildQuestion = function (key) {
     delete this.questions[key];
-    delete QUESTIONS[this.questions[key]];
+    delete QUESTIONS[key];
   }
-  this.deleteAllChild = function () {
-    for (i of questions) {
-      i.removeAllChildQuestion();
-      this.removeChildQuestion(i.key);
+  this.deleteAllChildQuestion = function () {
+    for (i in this.questions) {
+      this.questions[i].deleteAllChildQuestion();
+      this.deleteChildQuestion(i);
     }
   }
 }
 const QUESTIONS = {};
-const firstQuestion = new question(1, "Your age?");
-const secondQuestion = new question(2, "Your shcool?", "Under 18");
-const thirdQuestion = new question(3, "Your job?", "over 18");
-const tempQuestion = new question(4, "Ok", "cambridge")
+const firstQuestion = new Question(1, "Your age?");
+const secondQuestion = new Question(2, "Your shcool?", "Under 18");
+const thirdQuestion = new Question(3, "Your job?", "over 18");
+const tempQuestion = new Question(4, "Ok", "cambridge")
 firstQuestion.addChildQuestion(secondQuestion);
 firstQuestion.addChildQuestion(thirdQuestion);
 secondQuestion.addChildQuestion(tempQuestion);
@@ -56,8 +56,8 @@ function addQuestion() {
 
 function deleteQuestion() {
   const key = Number(document.getElementById("key").value);
-  QUESTIONS[QUESTIONS[key].parent].removeChildQuestion(key);
-  QUESTIONS[key].deleteAllChild();
+  QUESTIONS[key].deleteAllChildQuestion();
+  QUESTIONS[QUESTIONS[key].parent].deleteChildQuestion(key);
   delete QUESTIONS[key];
   console.log(QUESTIONS);
 }
@@ -68,11 +68,12 @@ function editQuestion() {
   const parent = Number(document.getElementById("parent").value);
   const answer = document.getElementById("answer").value;
   const newQuestion = new Question(key, question, answer, parent);
-  if (parent !== QUESTIONS[key].parent) {
-    const parentKey = QUESTIONS[key].parent;
-    QUESTIONS[parentKey].removeChildQuestion(key);
+  const parentKey = QUESTIONS[key].parent;
+  if (parent !== parentKey) {
+    QUESTIONS[parentKey].deleteChildQuestion(key);
   }
-  QUESTIONS[QUESTIONS[key].parent].addChildQuestion(newQuestion);
+  QUESTIONS[parentKey].addChildQuestion(newQuestion);
+  QUESTIONS[key] = newQuestion;
   console.log(QUESTIONS);
 }
 
