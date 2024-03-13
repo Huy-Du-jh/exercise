@@ -43,7 +43,8 @@ QUESTIONS[secondQuestion.key] = secondQuestion;
 QUESTIONS[thirdQuestion.key] = thirdQuestion;
 QUESTIONS[tempQuestion.key] = tempQuestion;
 
-function addQuestion() {
+function addQuestion(e) {
+  e.stopPropagation();
   const key = Number(document.getElementById("key").value);
   const question = document.getElementById("question").value;
   const parent = Number(document.getElementById("parent").value);
@@ -54,7 +55,8 @@ function addQuestion() {
   console.log(QUESTIONS);
 }
 
-function deleteQuestion() {
+function deleteQuestion(e) {
+  e.stopPropagation();
   const key = Number(document.getElementById("key").value);
   QUESTIONS[key].deleteAllChildQuestion();
   QUESTIONS[QUESTIONS[key].parent].deleteChildQuestion(key);
@@ -62,7 +64,8 @@ function deleteQuestion() {
   console.log(QUESTIONS);
 }
 
-function editQuestion() {
+function editQuestion(e) {
+  e.stopPropagation();
   const key = Number(document.getElementById("key").value);
   const question = document.getElementById("question").value;
   const parent = Number(document.getElementById("parent").value);
@@ -77,7 +80,8 @@ function editQuestion() {
   console.log(QUESTIONS);
 }
 
-function startDecisionTree() {
+function startDecisionTree(e) {
+  e.stopPropagation();
   let answer = firstQuestion.ask();
   let tempQuestion1 = firstQuestion;
   while (true) {

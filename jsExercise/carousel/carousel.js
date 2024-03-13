@@ -8,7 +8,8 @@ window.addEventListener("load", e => {
   }
 });
 let currentIndex = 0;
-function swipeLeft() {
+function swipeLeft(e) {
+  e.stopPropagation();
   const images = document.getElementsByClassName("carouselImage");
   const imagesContainer = images[0].parentNode;
   const containerWidthWithUnit = getComputedStyle(imagesContainer).getPropertyValue('width');
@@ -28,12 +29,13 @@ function swipeLeft() {
     currentIndex = images.length - 1;
   }
 }
-function swipeRight() {
+function swipeRight(e) {
+  e.stopPropagation();
   const images = document.getElementsByClassName("carouselImage");
   const imagesContainer = images[0].parentNode;
   const containerWidthWithUnit = getComputedStyle(imagesContainer).getPropertyValue('width');
   const containerWidth = Number(containerWidthWithUnit.slice(0, -2));
-  if (currentIndex === images.length) {
+  if (currentIndex === images.length - 1) {
     for (i = 0; i < images.length; i++) {
       images[i].style.transform = `translateX(${0}px)`;
     }
